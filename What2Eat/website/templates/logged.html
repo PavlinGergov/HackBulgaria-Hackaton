@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block content1 %}
+<div class="row">
+  <form class="navbar-form navbar-right">
+    <div class="col-md-6">
+
+      <a href="{% url 'dummy' %}">
+      </a>
+
+    </div>
+<!--     <div class="col-md-6">
+      <button type="button" class="btn btn-success">Profile</button>
+    </div> -->
+  </form>
+</div>
+
+{% endblock content1 %}
+
+
+{% block content2%}
+<div class="row">
+  <div style="margin-top:50px" class="col-md-12">
+    <h1 align="centered">Hello, MasterChef!</h1>
+    <p>Enter product:</p>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-8">
+
+    <input id="product" class="form-control" type="search">
+
+  </div>
+  <div class="col-md-4">
+    <button type="button" class="btn btn-success btn-group-justified" id="add_product" style="font-weight:bolder;">Add product
+    </button>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    &nbsp;
+  </div>
+</div>
+<form action="/findrecipe/" method="POST" id="addProductForm">
+  {% csrf_token %}
+  <div class="row">
+    <div class="col-md-8">
+        <select id="products" name="products" class="form-control" multiple="multiple" form="addProductForm">
+        </select>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      &nbsp;
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <button type="submit" class="btn btn-primary">Find recipes</button>
+    </div>
+  </div>
+</form>
+<script type="text/javascript">
+  function addProduct(value) {
+    var container = document.getElementById("products");
+    var option = document.createElement("option");
+    option.text = value;
+    option.value = value;
+    container.options.add(option);
+    var hidden_input = $('<input type="hidden" name="product_list[]" value="' + value + '">');
+    $('#addProductForm').append(hidden_input);
+    var product_input = document.getElementById("product");
+    product_input.value = "";
+    product_input.focus();
+  }
+  var add_prod_button = document.getElementById("add_product");
+  add_prod_button.onclick = function () {
+    addProduct(document.getElementById("product").value);
+  };
+  // detect 'Enter' key
+  $("#product").keyup(function (e) {
+    if (e.keyCode == 13) {
+      addProduct(document.getElementById("product").value);
+    }
+  });
+</script>
+
+{% endblock content2 %}
